@@ -1,0 +1,56 @@
+import React, { useState, useEffect, useRef } from 'react'
+import { Button, Input, message } from 'antd';
+import { request } from 'umi';
+import cytoscape from 'cytoscape'
+
+
+export default function index() {
+  const containerRef = useRef();
+
+  useEffect(() => {
+
+    var res, err, nodesdata,edgesdata
+    // useEffect不能是async
+    (async () => {
+      res=0;err=0;
+      [err, res] = await request('/api/getcyto?collectionname=nodes').then(data => [null, data]).catch(err => [err, null])
+      nodesdata = res.map(item =>{ return { data: item }})
+      res=0;err=0;
+      [err, res] = await request('/api/getcyto?collectionname=edges').then(data => [null, data]).catch(err => [err, null])
+      edgesdata = res.map(item =>{ return { data: item }});
+      const config = {
+        container: containerRef.current,
+        style: [
+          {
+            selector: "node",
+            style: { content: "data(id)" },
+          },
+        ],
+        elements: {
+          nodes: nodesdata,
+          edges: edgesdata
+        },
+
+      }
+      console.log(config)
+      cytoscape(config);
+
+    })();
+
+
+
+
+
+  }, []);
+
+  return (
+    <div>
+      <h1>Hello cytoscape</h1>
+      <Button id="getDataAndDraw" >getDataAndDraw</Button>
+      {/* <Button id="adjustcyto" onClick={adjustcyto}>adjustcyto</Button>
+      <Button id="setDataAndSave" onClick={setDataAndSave}>setDataAndSave</Button> */}
+      <h1>cyto title Click here to get data and redraw</h1>
+      <div className="cy" ref={containerRef} style={{ height: "300px" }} />
+    </div>
+  );
+}

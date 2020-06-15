@@ -80,9 +80,9 @@ export default function index() {
         upload.current.addEventListener("dragover", onDrag, false);
         upload.current.addEventListener("drop", onDrop, false);
         return () => {
-            upload.current.RemoveEventListener("dragenter", onDrag);
-            upload.current.RemoveEventListener("dragover", onDrag);
-            upload.current.RemoveEventListener("drop", onDrop);
+            upload.current.removeEventListener("dragenter", onDrag);
+            upload.current.removeEventListener("dragover", onDrag);
+            upload.current.removeEventListener("drop", onDrop);
         }
     }, [])
     return (

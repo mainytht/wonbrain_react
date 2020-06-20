@@ -18,10 +18,12 @@ export default function DeleteTable(params) {
 
   useEffect(() => {
   
+    // useEffect 中调用异步的方式
     (async () => {
         var [err, res] = await request('/api/getcyto?collectionname=nodes').then(data => [null, data]).catch(err => [err, null])
         console.log(res)
       })()
+      
 
     setDatasource([
       {

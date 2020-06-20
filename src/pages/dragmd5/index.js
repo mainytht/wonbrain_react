@@ -76,6 +76,7 @@ export default function index() {
     }
 
     useEffect(() => {
+        
         upload.current.addEventListener("dragenter", onDrag, false);
         upload.current.addEventListener("dragover", onDrag, false);
         upload.current.addEventListener("drop", onDrop, false);

@@ -20,11 +20,12 @@ export default function index() {
   async function getDataAndDraw() {
     res = 0; err = 0;
     [err, res] = await request('/api/getcyto?collectionname=nodes').then(data => [null, data]).catch(err => [err, null])
+    console.log(res)
     nodesdata = res.map(item => { return { data: item } })
     res = 0; err = 0;
     [err, res] = await request('/api/getcyto?collectionname=edges').then(data => [null, data]).catch(err => [err, null])
     edgesdata = res.map(item => { return { data: item } });
-
+    console.log(res)
     cy.current.elements().remove();
     cy.current.add(nodesdata);
     cy.current.add(edgesdata);

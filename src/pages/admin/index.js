@@ -8,7 +8,7 @@ export default function DeleteTable(params) {
   const [columns, setColumns] = useState(0);
   const tablediv = useRef(0);
 
-  document.addEventListener(
+  window.addEventListener(
     'ehandledelete',
     e => {
       handleDelete(e.detail.data);
@@ -66,7 +66,7 @@ export default function DeleteTable(params) {
               title="Sure to delete?"
               onConfirm={() =>{
                 console.log(record.key);
-                document.dispatchEvent(new CustomEvent("ehandledelete",{detail:{data:record.key}}))}
+                window.dispatchEvent(new CustomEvent("ehandledelete",{detail:{data:record.key}}))}
               }
             >
               <a> Delete </a>

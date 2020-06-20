@@ -1,6 +1,5 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
 import { Table, Input, Button, Popconfirm, Form } from 'antd';
-import { request } from 'umi';
 
 export default function DeleteTable(params) {
   const [datacount, setDatacount] = useState(0);
@@ -11,18 +10,13 @@ export default function DeleteTable(params) {
   document.addEventListener(
     'ehandledelete',
     e => {
+      console.log(e.detail.data);
       handleDelete(e.detail.data);
     },
     false,
   );
 
   useEffect(() => {
-  
-    (async () => {
-        var [err, res] = await request('/api/getcyto?collectionname=nodes').then(data => [null, data]).catch(err => [err, null])
-        console.log(res)
-      })()
-
     setDatasource([
       {
         key: 0,
@@ -38,7 +32,6 @@ export default function DeleteTable(params) {
       },
     ]);
     setDatacount(2);
-
 
     setColumns([
       {
@@ -73,7 +66,6 @@ export default function DeleteTable(params) {
           
       },
     ]);
-
   }, []);
 
   function handlePop() {

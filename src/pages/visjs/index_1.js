@@ -1,5 +1,4 @@
 import React, { useCallback, useState } from 'react';
-import { request } from 'umi';
 import './index.css';
 
 import VisNetworkReactComponent from 'vis-network-react';
@@ -9,12 +8,19 @@ let defaultdata = {
     {
       id: 1,
       value: 2,
-
+      fixed: {
+        x: true,
+        y: true,
+      },
       label: 'Node 1',
     },
     {
       id: 2,
       value: 4,
+      fixed: {
+        x: true,
+        y: true,
+      },
       font: {
         size: 12,
         color: 'red',
@@ -26,6 +32,10 @@ let defaultdata = {
     },
     {
       id: 3,
+      fixed: {
+        x: true,
+        y: true,
+      },
       font: { multi: 'md', align: 'left', face: 'georgia' },
       label: '*This* is a\n_markdown_ *_multi-_ font* \n`label`',
       value: 12,
@@ -132,7 +142,7 @@ let events = {
   },
 };
 
-export default function visjs() {
+function App() {
   const [data, setData] = useState(defaultdata);
   const [networkNodes, setNetworkNodes] = useState([]);
 
@@ -150,48 +160,12 @@ export default function visjs() {
 
   const handleGetNodes = useCallback(() => {
     console.log(networkNodes);
-  }, []);
-
-  async function getDataAndDraw() {
-    var res = 0;
-    var err = 0;
-    [err, res] = await request('/api/getcyto?collectionname=nodes')
-      .then(data => [null, data])
-      .catch(err => [err, null]);
-    console.log(res);
-    let tmpnodes = res.map(item => {
-      return { id: item.id, label: item.name };
-    });
-    // console.log(res.map(item => { return { id:item.id,label:item.name } }))
-    res = 0;
-    err = 0;
-    [err, res] = await request('/api/getcyto?collectionname=edges')
-      .then(data => [null, data])
-      .catch(err => [err, null]);
-    console.log(res);
-    // console.log(res.map(item => { return { id:item.id,from:item.source,to:item.target } }))
-    let tmpedges = res.map(item => {
-      return { id: item.id, from: item.source, to: item.target };
-    });
-    setData({ nodes: tmpnodes, edges: tmpedges });
-    // cy.current.elements().remove();
-    // cy.current.add(nodesdata);
-    // cy.current.add(edgesdata);
-    // console.log(cy.current)
-    // cy.current.layout({
-    //   name: "grid",
-    //   rows: 2,
-    //   cols: 2
-    // }).run();
-  }
+  }, [networkNodes]);
 
   return (
     <div className="App">
-      <h1>Hello visjs</h1>
       <button onClick={handleAddNode}>add random node</button>
       <button onClick={handleGetNodes}>get nodes</button>
-      <button onClick={getDataAndDraw}>getDataAndDraw</button>
-
       <VisNetworkReactComponent
         data={data}
         options={{
@@ -234,3 +208,5 @@ export default function visjs() {
     </div>
   );
 }
+
+export default App;

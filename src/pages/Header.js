@@ -1,11 +1,11 @@
 import React from 'react';
 import { Affix, Menu, Dropdown } from 'antd';
 // import {Link,withRouter, history as router} from 'umi';
-import {Link,withRouter} from 'umi';
-import {UserSwitchOutlined} from '@ant-design/icons'
+import { Link, withRouter } from 'umi';
+import { UserSwitchOutlined } from '@ant-design/icons';
 
 const MenuItem = Menu.Item;
-const index = ({history, location }) => {
+const index = ({ history, location }) => {
   const onLogout = () => {
     localStorage.clear();
     history.push('/login');
@@ -22,7 +22,12 @@ const index = ({history, location }) => {
     <Affix offsetTop={0}>
       <div className="header">
         <img className="logo" src={require('@/assets/logo2.png')} alt="logo" />
-        <Menu className="menus" mode="horizontal" theme="dark" selectedKeys={[location.pathname]}>
+        <Menu
+          className="menus"
+          mode="horizontal"
+          theme="dark"
+          selectedKeys={[location.pathname]}
+        >
           <MenuItem key="/">
             <Link to="/first">首页</Link>
           </MenuItem>
@@ -38,6 +43,9 @@ const index = ({history, location }) => {
           <MenuItem key="/list">
             <Link to="/list">列表</Link>
           </MenuItem>
+          <MenuItem key="/visjs">
+            <Link to="/visjs">vjsjs</Link>
+          </MenuItem>
           <MenuItem key="/cyto">
             <Link to="/cyto">cyto</Link>
           </MenuItem>
@@ -45,7 +53,7 @@ const index = ({history, location }) => {
         <div className="right">
           <Dropdown overlay={menu}>
             <a className="ant-dropdown-link" href="#">
-            <UserSwitchOutlined /> {localStorage.nickname}
+              <UserSwitchOutlined /> {localStorage.nickname}
             </a>
           </Dropdown>
         </div>

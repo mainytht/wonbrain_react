@@ -6,7 +6,7 @@ export default defineConfig({
   },
   routes: [
     { path: '/login', component: '@/pages/login' },
-    { exact: true, path: '/', redirect: '/first'},
+    { exact: true, path: '/', redirect: '/first' },
     {
       path: '/',
       component: '@/pages/index',
@@ -14,6 +14,7 @@ export default defineConfig({
         { path: '/list', component: '@/pages/list' },
         { path: '/admin', component: '@/pages/admin' },
         { path: '/cyto', component: '@/pages/cyto' },
+        { path: '/visjs', component: '@/pages/visjs' },
         { path: '/first', component: '@/pages/first' },
         { path: '/markdown', component: '@/pages/markdown' },
         { path: '/dragmd5', component: '@/pages/dragmd5' },

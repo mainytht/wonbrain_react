@@ -9,9 +9,9 @@ export default defineConfig({
     { exact: true, path: '/', redirect: '/first' },
     {
       path: '/',
-      component: '@/pages/index',
+      component: '@/layout/index',
       routes: [
-        { path: '/list', component: '@/pages/list' },
+        { path: '/list', component: '@/pages/list/content.js' },
         { path: '/admin', component: '@/pages/admin' },
         { path: '/cyto', component: '@/pages/cyto' },
         { path: '/visjs', component: '@/pages/visjs' },

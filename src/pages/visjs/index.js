@@ -36,7 +36,7 @@ let defaultdata = {
       value: 33,
       font: { multi: 'html', align: 'center' },
       label:
-        '<b>This</b> is a\n<i>default</i> <b><i>multi-</i>font</b> <code>label</code>Nodes can be all kinds of colors. This example shows all possible ways of defining colors. If you supply an object, the undefined fields will assume the default colors.\n When supplying a hex or rgb format color, it will be parsed and variations will be created for highlight and hover.\n Edges with inheritColor take the border colors.<br>Nodes can be all kinds of colors. This example shows all possible ways of defining colors. If you supply an object, the undefined fields will assume the default colors. When supplying a hex or rgb format color, it will be parsed and variations will be created for highlight and hover. Edges with inheritColor take the border colors.\n',
+        '<b>This</b> is a<i>default</i> <b><i>multi-</i>font</b> <code>label Nodes can be all kinds of colors.  </code>',
     },
     {
       id: 6,
@@ -174,15 +174,6 @@ export default function visjs() {
       return { id: item.id, from: item.source, to: item.target };
     });
     setData({ nodes: tmpnodes, edges: tmpedges });
-    // cy.current.elements().remove();
-    // cy.current.add(nodesdata);
-    // cy.current.add(edgesdata);
-    // console.log(cy.current)
-    // cy.current.layout({
-    //   name: "grid",
-    //   rows: 2,
-    //   cols: 2
-    // }).run();
   }
 
   return (

@@ -4,9 +4,11 @@ import ajax from '../ajax';
 
 function Books() {
   const { state, dispatch } = useContext(Context);
+
   useEffect(() => {
-    ajax('/books').then(books => {
-      dispatch({ type: 'setBooks', books: books });
+    ajax('/books').then(res => {
+      console.log('111');
+      dispatch({ type: 'setBooks', books: res });
     });
   }, []);
   return (

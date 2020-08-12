@@ -21,12 +21,12 @@ export default defineConfig({
       ],
     },
   ],
-  proxy: {
-    '/api': {
-      target: 'http://localhost:3000',
-      changeOrigin: true,
-    },
-  },
+  // proxy: {
+  //   '/api': {
+  //     target: 'http://localhost:3000',
+  //     changeOrigin: true,
+  //   },
+  // },
   request: {
     dataField: '',
     // 启用方式默认启用。

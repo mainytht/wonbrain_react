@@ -6,7 +6,6 @@ import Movies from './components/movies';
 import userReducer from './reducers/user_reducer';
 import booksReducer from './reducers/books_reducer';
 import moviesReducer from './reducers/movies_reducer';
-import { request } from 'umi';
 
 const store = {
   user: null,

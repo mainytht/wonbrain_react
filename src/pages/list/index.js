@@ -33,11 +33,12 @@ function App() {
   const [state, dispatch] = useReducer(reducer, store);
 
   const api = { state, dispatch };
+  console.log('reducer combined to:');
+  console.log(obj);
   return (
     <Context.Provider value={api}>
       <h1 className={style.title}>
-        {' '}
-        利用 useRecuce useContext 模拟 redux ，利用 自带mock{' '}
+        利用 useRecuce useContext 模拟 redux ，利用 自带mock
       </h1>
       <User />
       <hr />

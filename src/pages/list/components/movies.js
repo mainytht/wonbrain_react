@@ -5,8 +5,8 @@ import { request } from 'umi';
 function Movies() {
   const { state, dispatch } = useContext(Context);
   useEffect(() => {
-    request('/movies').then(movies => {
-      dispatch({ type: 'setMovies', movies: movies });
+    request('/movies').then(res => {
+      dispatch({ type: 'setMovies', movies: res });
     });
   }, []);
   return (

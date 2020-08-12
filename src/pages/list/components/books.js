@@ -1,13 +1,11 @@
 import React, { useContext, useEffect } from 'react';
 import Context from '../Context';
-import ajax from '../ajax';
+import { request } from 'umi';
 
 function Books() {
   const { state, dispatch } = useContext(Context);
-
   useEffect(() => {
-    ajax('/books').then(res => {
-      console.log('111');
+    request('/books').then(res => {
       dispatch({ type: 'setBooks', books: res });
     });
   }, []);

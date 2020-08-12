@@ -41,13 +41,19 @@ const index = ({ history, location }) => {
             <Link to="/admin">管理</Link>
           </MenuItem>
           <MenuItem key="/list">
-            <Link to="/list">列表</Link>
+            <Link to="/list">useReduce</Link>
           </MenuItem>
           <MenuItem key="/visjs">
             <Link to="/visjs">vjsjs</Link>
           </MenuItem>
           <MenuItem key="/cyto">
             <Link to="/cyto">cyto</Link>
+          </MenuItem>
+          <MenuItem key="/mockdemo">
+            <Link to="/mockdemo">mockdemo</Link>
+          </MenuItem>
+          <MenuItem key="/test">
+            <Link to="/test">test</Link>
           </MenuItem>
         </Menu>
         <div className="right">

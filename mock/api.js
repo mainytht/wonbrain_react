@@ -1,41 +1,22 @@
-//没有定义失败
-
 export default {
-  //mothod url
-  'get /user': function(req, res) {
-    setTimeout(() => {
-      res.json({
-        id: 1,
-        name: 'Frank',
-      });
-    }, 1500);
+  // 支持值为 Object 和 Array
+  'GET /testapi/users': { users: [1, 2] },
+  // GET 可忽略
+  '/testapi/users/1': { id: 1 },
+
+  // 支持自定义函数，API 参考 express@4
+  'POST /testapi/users/create': (req, res) => {
+    // 添加跨域请求头
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.end('ok');
   },
-  'get /books': function(req, res) {
-    setTimeout(() => {
-      res.json([
-        {
-          id: 1,
-          name: 'JavaScript 高级程序设计',
-        },
-        {
-          id: 2,
-          name: 'JavaScript 精粹',
-        },
-      ]);
-    }, 1500);
-  },
-  'get /movies': function(req, res) {
-    setTimeout(() => {
-      res.json([
-        {
-          id: 1,
-          name: '爱在黎明破晓前',
-        },
-        {
-          id: 2,
-          name: '恋恋笔记本',
-        },
-      ]);
-    }, 1500);
-  },
+  'GET /user': { id: 2, name: '小李飞刀' },
+  'GET /books': [
+    { id: 1, name: '演员的自我修养' },
+    { id: 2, name: '我的奋斗' },
+  ],
+  'GET /movies': [
+    { id: 1, name: '阿甘正传' },
+    { id: 2, name: '红辣椒' },
+  ],
 };

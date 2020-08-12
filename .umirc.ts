@@ -18,6 +18,8 @@ export default defineConfig({
         { path: '/first', component: '@/pages/first' },
         { path: '/markdown', component: '@/pages/markdown' },
         { path: '/dragmd5', component: '@/pages/dragmd5' },
+        { path: '/mockdemo', component: '@/pages/mockdemo' },
+        { path: '/test', component: '@/pages/test' },
       ],
     },
   ],

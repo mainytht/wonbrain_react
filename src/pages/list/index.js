@@ -6,6 +6,7 @@ import Movies from './components/movies';
 import userReducer from './reducers/user_reducer';
 import booksReducer from './reducers/books_reducer';
 import moviesReducer from './reducers/movies_reducer';
+import style from './index.css';
 
 const store = {
   user: null,
@@ -34,6 +35,10 @@ function App() {
   const api = { state, dispatch };
   return (
     <Context.Provider value={api}>
+      <h1 className={style.title}>
+        {' '}
+        利用 useRecuce useContext 模拟 redux ，利用 自带mock{' '}
+      </h1>
       <User />
       <hr />
       <Books />

@@ -1,11 +1,11 @@
 import React, { useContext, useEffect } from 'react';
 import Context from '../Context';
-import ajax from '../ajax';
+import { request } from 'umi';
 
 function Movies() {
   const { state, dispatch } = useContext(Context);
   useEffect(() => {
-    ajax('/movies').then(movies => {
+    request('/movies').then(movies => {
       dispatch({ type: 'setMovies', movies: movies });
     });
   }, []);

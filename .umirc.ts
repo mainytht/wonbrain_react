@@ -11,7 +11,7 @@ export default defineConfig({
       path: '/',
       component: '@/layout/index',
       routes: [
-        { path: '/list', component: '@/pages/list/content.js' },
+        { path: '/list', component: '@/pages/list' },
         { path: '/admin', component: '@/pages/admin' },
         { path: '/cyto', component: '@/pages/cyto' },
         { path: '/visjs', component: '@/pages/visjs' },

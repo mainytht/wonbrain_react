@@ -3,6 +3,9 @@ import { Row, Col } from 'antd';
 import { UnControlled as CodeMirror } from 'react-codemirror2';
 import marked from 'marked';
 import style from './index.css';
+import Visjs from '../visjs';
+import { Tabs } from 'antd';
+const { TabPane } = Tabs;
 import { createFromIconfontCN } from '@ant-design/icons';
 // import styles from './index.less';
 
@@ -21,30 +24,19 @@ import 'codemirror/theme/material.css';
 // ambiance ...
 
 export default params => {
-  // const[mdtext,setMdtext]=useState("test")
+  const [col1, setCol1] = useState(12);
+  const [col2, setCol2] = useState(12);
+  const [bpreview, setBpreview] = useState('hidden');
+
   const IconFont = createFromIconfontCN({
-    scriptUrl: '//at.alicdn.com/t/font_2016956_hj77mmpzwq.js',
+    scriptUrl: '//at.alicdn.com/t/font_2016956_1j6x4d13qgt.js',
   });
   let mdtext = '# test  only ';
   const mdsrc = useRef();
   const mdres = useRef();
-  // function changeBold() {
-  //   console.log(mdsrc.current.editor.getSelection());
-  //   mdsrc.current.editor.replaceSelection(
-  //     '**' + mdsrc.current.editor.getSelection() + '**',
-  //   );
-  // }
-  // function changeBold() {
-  //   console.log(mdsrc.current.editor.getSelection());
-  //   mdsrc.current.editor.replaceSelection(
-  //     '**' + mdsrc.current.editor.getSelection() + '**',
-  //   );
-  // }
+  const vismap = useRef();
 
   function addHead(headtxt) {
-    // console.log(mdsrc.current.editor.getCursor())
-    // console.log(headtxt);
-    // console.log(mdsrc.current.editor.getCursor());
     let lineno = mdsrc.current.editor.getCursor().line;
     let chno = mdsrc.current.editor.getCursor().ch;
     console.log(lineno + headtxt + chno);
@@ -69,28 +61,8 @@ export default params => {
       start + mdsrc.current.editor.getSelection() + end,
     );
   }
-  // function changeBold() {
-  //   console.log(mdsrc.current.editor.getSelection());
-  //   mdreplace('**','**')
-  //   // mdsrc.current.editor.replaceSelection(
-  //   //   '**' + mdsrc.current.editor.getSelection() + '**',
-  //   // );
-  // }
-
-  function changeUndo(params) {}
-  function changeRedo(params) {}
-  function changeList(params) {}
-  function changeNumList(params) {}
-
-  function changeCheckList(params) {}
-  function changeTable(params) {}
-  function changeLink(params) {}
-  function changePicture(params) {}
 
   function rendertohtml(editor, data, value) {
-    // console.log(editor)
-    // console.log(data)
-    // console.log(value)
     mdres.current.innerHTML = marked(value);
   }
   useEffect(() => {
@@ -99,7 +71,7 @@ export default params => {
 
   return (
     <Row>
-      <Col span={12}>
+      <Col span={col1}>
         <div className={style.mdtoolbar}>
           <IconFont
             className={style.iconfont}
@@ -162,7 +134,7 @@ export default params => {
           />
           <IconFont
             className={style.iconfont}
-            type="icon-number-list"
+            type="icon-liebiaoshuzi"
             title="数字列表"
             onMouseDown={() => addHead('1. ')}
           />
@@ -190,7 +162,18 @@ export default params => {
             title="图片"
             onMouseDown={() => mdreplace('![](', ')')}
           />
+
+          <IconFont
+            className={style.right}
+            type="icon-Preview"
+            title="预览MarkDown"
+            onMouseDown={() => {
+              setBpreview(bpreview === 'hidden' ? 'visible' : 'hidden');
+              console.log(bpreview);
+            }}
+          />
         </div>
+
         <CodeMirror
           ref={mdsrc}
           value={mdtext}
@@ -210,8 +193,31 @@ export default params => {
           onChange={rendertohtml}
         />
       </Col>
-      <Col span={12}>
-        <div ref={mdres}>preview</div>
+      <Col span={col2}>
+        <div
+          ref={mdres}
+          style={{ visibility: bpreview }}
+          className={style.mdres}
+        ></div>
+        <div
+          style={{ visibility: bpreview === 'hidden' ? 'visible' : 'hidden' }}
+          className={style.visjs}
+        >
+          <Visjs />
+        </div>
+        {/* <Visjs style={{ visibility:(bpreview === 'hidden')? 'visible' : 'hidden'}} /> */}
+        {/* 不能用setCol(0),因为这样就会消失,所以这里是折衷方法.. 
+        e.target.style.visibility='hidden';vismap.current.style.visibility='visible';
+        e.target.style.visibility='hidden';mdres.current.style.visibility='visible' 
+           //这段代码不能用，visjs消失后不能重新渲染，
+          <Tabs defaultActiveKey="1" size="small">
+            <TabPane tab="文档预览" key="1">
+              <div ref={mdres}>preview</div>
+            </TabPane>
+            <TabPane tab="思维导图" key="2">
+              <Visjs />
+            </TabPane>
+          </Tabs> */}
       </Col>
     </Row>
   );

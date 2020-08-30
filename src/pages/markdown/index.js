@@ -21,21 +21,42 @@ import 'codemirror/mode/python/python';
 
 // 引入 ambiance 主题
 import 'codemirror/theme/material.css';
-// ambiance ...
+// ambiance ...material
 
 export default params => {
   const [col1, setCol1] = useState(12);
   const [col2, setCol2] = useState(12);
-  const [bpreview, setBpreview] = useState('hidden');
-
+  const [bpreview, setBpreview] = useState('visible');
+  let mdtext = '# test  only ';
   const IconFont = createFromIconfontCN({
     scriptUrl: '//at.alicdn.com/t/font_2016956_1j6x4d13qgt.js',
   });
-  let mdtext = '# test  only ';
+
   const mdsrc = useRef();
   const mdres = useRef();
   const vismap = useRef();
-
+  marked.setOptions({
+    // renderer: new marked.Renderer(),
+    gfm: true,
+    tables: true,
+    breaks: true,
+    pedantic: false,
+    sanitize: false,
+    smartLists: true,
+    smartypants: false,
+    // highlight(code) {
+    //   return Hljs.highlightAuto(code).value;
+    // },
+  });
+  function mdBeforeChange(instance, changeObj) {
+    //自定义图片粘贴，这里更新后未能取得更新后的值，所以在update中渲染html
+    let text = changeObj.text;
+    let from = changeObj.from;
+    let to = changeObj.to;
+    if (text[0].match('^http(s)?\\:\\/\\/(\\S)*\\.(jpg|gif|png)$')) {
+      changeObj.update(from, to, ['![图片](' + text[0] + ')']);
+    }
+  }
   function addHead(headtxt) {
     let lineno = mdsrc.current.editor.getCursor().line;
     let chno = mdsrc.current.editor.getCursor().ch;
@@ -62,8 +83,8 @@ export default params => {
     );
   }
 
-  function rendertohtml(editor, data, value) {
-    mdres.current.innerHTML = marked(value);
+  function rendertohtml(ins) {
+    mdres.current.innerHTML = marked(ins.doc.getValue());
   }
   useEffect(() => {
     mdres.current.innerHTML = marked(mdtext);
@@ -148,7 +169,7 @@ export default params => {
             className={style.iconfont}
             type="icon-table"
             title="表格"
-            onMouseDown={() => addHead('|   |    |\n|   |   |\n|   |   |\n')}
+            onMouseDown={() => addHead('|   |   |\n|   |   |\n|   |   |\n')}
           />
           <IconFont
             className={style.iconfont}
@@ -165,16 +186,16 @@ export default params => {
 
           <IconFont
             className={style.right}
-            type="icon-Preview"
-            title="预览MarkDown"
-            onMouseDown={() => {
+            type="icon-qiehuan"
+            title="切换文档预览/项目管理"
+            onMouseDown={e => {
               setBpreview(bpreview === 'hidden' ? 'visible' : 'hidden');
-              console.log(bpreview);
             }}
           />
         </div>
 
         <CodeMirror
+          onBeforeChange={mdBeforeChange}
           ref={mdsrc}
           value={mdtext}
           // cursor不设的话有时候看不见
@@ -190,7 +211,7 @@ export default params => {
             mode: 'markdown', // 实现代码高亮
             lineWrapping: true,
           }}
-          onChange={rendertohtml}
+          onUpdate={rendertohtml}
         />
       </Col>
       <Col span={col2}>

@@ -1,8 +1,10 @@
 import React, { useState, useRef } from 'react';
-import { Form, Input, Button, Checkbox } from 'antd';
+import { Form, Input, Button, Checkbox, Tabs, Icon } from 'antd';
 import styles from './index.less';
 import { request } from 'umi';
 import { history as router } from 'umi';
+const { TabPane } = Tabs;
+const iconStyle = { color: 'rgba(0,0,0,.25)' };
 
 export default function Login(props) {
   // props 是约定的参数，可以解构出{history 。。。。} 等
@@ -45,83 +47,123 @@ export default function Login(props) {
   };
 
   return (
-    <Form
-      className={styles.form}
-      name="basic"
-      initialValues={{
-        remember: true,
-      }}
-      onFinish={onFinish}
-      onFinishFailed={onFinishFailed}
-      labelAlign="left"
-      labelCol={{
-        span: 6,
-      }}
-      wrapperCol={{
-        span: 18,
-        offset: 0,
-      }}
-    >
-      <Form.Item
-        label="Username"
-        name="username"
-        rules={[
-          {
-            required: true,
-            message: 'Please input your username!',
-          },
-        ]}
-      >
-        <Input />
-      </Form.Item>
-      <Form.Item
-        name="email"
-        label="E-mail"
-        rules={[
-          {
-            type: 'email',
-            message: 'The input is not valid E-mail!',
-          },
-          {
-            required: true,
-            message: 'Please input your E-mail!',
-          },
-        ]}
-      >
-        <Input />
-      </Form.Item>
-      <Form.Item
-        label="Password"
-        name="password"
-        rules={[
-          {
-            required: true,
-            message: 'Please input your password!',
-          },
-        ]}
-      >
-        <Input.Password />
-      </Form.Item>
+    <div className={styles.loginbox}>
+      <Tabs defaultActiveKey="1" centered>
+        <TabPane tab="账号登录" key="1">
+          <h1>
+            {/* <img src={require('@/assets/logo2.png')} alt="logo2" /> */}
+            连线超脑
+          </h1>
+          <Form
+            className={styles.form}
+            name="basic"
+            initialValues={{
+              remember: true,
+            }}
+            onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
+            labelAlign="left"
+            labelCol={{
+              span: 6,
+            }}
+            wrapperCol={{
+              span: 18,
+              offset: 0,
+            }}
+          >
+            <Form.Item
+              label="Username"
+              name="username"
+              rules={[
+                {
+                  required: true,
+                  message: 'Please input your username!',
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
 
-      <Form.Item name="remember" valuePropName="checked">
-        <Checkbox align="center"> Remember me </Checkbox>
-      </Form.Item>
+            <Form.Item
+              label="Password"
+              name="password"
+              rules={[
+                {
+                  required: true,
+                  message: 'Please input your password!',
+                },
+              ]}
+            >
+              <Input.Password />
+            </Form.Item>
 
-      <Form.Item>
-        <Button
-          align="center"
-          type="primary"
-          htmlType="submit"
-          // loading={loading}
-          // onClick={
-          //   handleSubmit
-          // }
-          type="primary"
-          style={{ width: '100%' }}
-        >
-          Submit
-        </Button>
-      </Form.Item>
-    </Form>
+            <Form.Item name="remember" valuePropName="checked">
+              <Checkbox align="center"> Remember me </Checkbox>
+            </Form.Item>
+
+            <Form.Item>
+              <Button align="center" type="primary" htmlType="submit">
+                登录
+              </Button>
+            </Form.Item>
+          </Form>
+        </TabPane>
+        <TabPane tab="账号注册" key="2">
+          <h1>
+            {/* <img src={require('@/assets/logo2.png')} alt="logo2" /> */}
+            注册超脑
+          </h1>
+          {/* Form表单 */}
+          <Form>
+            <Form.Item
+              name={['user', 'name']}
+              label="Name"
+              rules={[{ required: true }]}
+            >
+              <Input
+                prefix={<Icon type="user" style={iconStyle} />}
+                placeholder="请输入用户名"
+                autoFocus
+              />
+              ,
+            </Form.Item>
+            <Form.Item
+              name="email"
+              label="E-mail"
+              rules={[
+                {
+                  type: 'email',
+                  message: 'The input is not valid E-mail!',
+                },
+                {
+                  required: true,
+                  message: 'Please input your E-mail!',
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item
+              name={['user', 'pass']}
+              label="Password"
+              rules={[{ required: true }]}
+            >
+              <Input
+                type="password"
+                prefix={<Icon type="lock" style={iconStyle} />}
+                placeholder="请输入密码"
+                autoFocus
+              />
+              ,
+            </Form.Item>
+            <Form.Item>
+              <Button align="center" type="primary" htmlType="submit">
+                注册
+              </Button>
+            </Form.Item>
+          </Form>
+        </TabPane>
+      </Tabs>
+    </div>
   );
 }

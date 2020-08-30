@@ -29,7 +29,7 @@ export default params => {
   const [bpreview, setBpreview] = useState('visible');
   let mdtext = '# test  only ';
   const IconFont = createFromIconfontCN({
-    scriptUrl: '//at.alicdn.com/t/font_2016956_1j6x4d13qgt.js',
+    scriptUrl: '//at.alicdn.com/t/font_2016956_nwzo0eu00d.js',
   });
 
   const mdsrc = useRef();
@@ -48,6 +48,9 @@ export default params => {
     //   return Hljs.highlightAuto(code).value;
     // },
   });
+
+  function uploadtocloud() {}
+
   function mdBeforeChange(instance, changeObj) {
     //自定义图片粘贴，这里更新后未能取得更新后的值，所以在update中渲染html
     let text = changeObj.text;
@@ -96,7 +99,13 @@ export default params => {
         <div className={style.mdtoolbar}>
           <IconFont
             className={style.iconfont}
-            type="icon-biaoti13"
+            type="icon-shangchuanyunduan1"
+            title="上传到云"
+            onMouseDown={uploadtocloud}
+          />
+          <IconFont
+            className={style.iconfont}
+            type="icon-heading"
             title="改变标题"
             onMouseDown={() => addHead('# ')}
           />
@@ -116,7 +125,7 @@ export default params => {
 
           <IconFont
             className={style.iconfont}
-            type="icon-under-line1"
+            type="icon-underline"
             title="下划线"
             onMouseDown={() => mdreplace('<u>', '</u>')}
           />

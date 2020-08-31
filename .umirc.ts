@@ -20,6 +20,7 @@ export default defineConfig({
         { path: '/dragmd5', component: '@/pages/dragmd5' },
         { path: '/mockdemo', component: '@/pages/mockdemo' },
         { path: '/test', component: '@/pages/test' },
+        { path: '/usercenter', component: '@/pages/usercenter' },
       ],
     },
   ],

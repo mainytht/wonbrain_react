@@ -1,17 +1,17 @@
 import React, { useState, useRef } from 'react';
-import { Form, Input, Button, Checkbox, Tabs, Icon } from 'antd';
+import { Form, Input, Button, Checkbox, Tabs } from 'antd';
 import styles from './index.less';
 import { request } from 'umi';
 import { history as router } from 'umi';
 const { TabPane } = Tabs;
-const iconStyle = { color: 'rgba(0,0,0,.25)' };
 
 export default function Login(props) {
   // props 是约定的参数，可以解构出{history 。。。。} 等
   // console.log(props);
-  const [message, setMessage] = useState(0);
+  const [loginmessage, setLoginmessage] = useState('');
   // onFinish 也就是 缺省的submit
-  const onFinish = values => {
+
+  const onLoginFinish = values => {
     console.log('Success and form data is:', values);
     request('/api/login', {
       method: 'post',
@@ -25,25 +25,41 @@ export default function Login(props) {
         if (data.type === 1) {
           // 状态为1 说明 登录成功
           //react 的request解析后，去除了一级data，与 vue不同
-          setMessage({
-            message: data.text,
-            type: 'success',
-          });
+          setLoginmessage('登录成功');
           localStorage.setItem('token', data.token);
-          router.push('todoList');
+          router.push('first');
         } else {
           // 状态为0 说明出现了一些错误
-          setMesage(data);
+          setLoginmessage('用户名或密码错误');
         }
       })
       .catch(err => {
         console.log('err occured');
         console.log(err);
+        setLoginmessage('发送请求错误');
       });
   };
 
-  const onFinishFailed = errorInfo => {
+  const onLoginFinishFailed = errorInfo => {
     console.log('Failed:', errorInfo);
+  };
+
+  const onRegistFinish = values => {
+    console.log(values);
+    request('/api/regist', {
+      method: 'post',
+      data: {
+        username: values.username,
+        password: values.password,
+      },
+    })
+      .then(data => console.log(data))
+
+      .catch(err => console.log(err));
+  };
+
+  const onRegistFinishFailed = errorInfo => {
+    console.log(errorInfo);
   };
 
   return (
@@ -56,20 +72,19 @@ export default function Login(props) {
           </h1>
           <Form
             className={styles.form}
-            name="basic"
             initialValues={{
               remember: true,
             }}
-            onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
+            onFinish={onLoginFinish}
+            onFinishFailed={onLoginFinishFailed}
             labelAlign="left"
-            labelCol={{
-              span: 6,
-            }}
-            wrapperCol={{
-              span: 18,
-              offset: 0,
-            }}
+            // labelCol={{
+            //   span: 6,
+            // }}
+            // wrapperCol={{
+            //   span: 18,
+            //   offset: 0,
+            // }}
           >
             <Form.Item
               label="Username"
@@ -105,6 +120,7 @@ export default function Login(props) {
               <Button align="center" type="primary" htmlType="submit">
                 登录
               </Button>
+              <span>{loginmessage}</span>
             </Form.Item>
           </Form>
         </TabPane>
@@ -114,19 +130,35 @@ export default function Login(props) {
             注册超脑
           </h1>
           {/* Form表单 */}
-          <Form>
+          <Form
+            className={styles.form}
+            initialValues={{
+              remember: true,
+            }}
+            onFinish={onRegistFinish}
+            onFinishFailed={onRegistFinishFailed}
+            labelAlign="left"
+            // labelCol={{
+            //   span: 6,
+            // }}
+            // wrapperCol={{
+            //   span: 18,
+            //   offset: 0,
+            // }}
+          >
             <Form.Item
-              name={['user', 'name']}
-              label="Name"
-              rules={[{ required: true }]}
+              label="Username"
+              name="username"
+              rules={[
+                {
+                  required: true,
+                  message: 'Please input your username!',
+                },
+              ]}
             >
-              <Input
-                prefix={<Icon type="user" style={iconStyle} />}
-                placeholder="请输入用户名"
-                autoFocus
-              />
-              ,
+              <Input />
             </Form.Item>
+
             <Form.Item
               name="email"
               label="E-mail"
@@ -144,18 +176,18 @@ export default function Login(props) {
               <Input />
             </Form.Item>
             <Form.Item
-              name={['user', 'pass']}
               label="Password"
-              rules={[{ required: true }]}
+              name="password"
+              rules={[
+                {
+                  required: true,
+                  message: 'Please input your password!',
+                },
+              ]}
             >
-              <Input
-                type="password"
-                prefix={<Icon type="lock" style={iconStyle} />}
-                placeholder="请输入密码"
-                autoFocus
-              />
-              ,
+              <Input.Password />
             </Form.Item>
+
             <Form.Item>
               <Button align="center" type="primary" htmlType="submit">
                 注册

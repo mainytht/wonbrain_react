@@ -14,6 +14,8 @@ const index = ({ history, location }) => {
     <Menu>
       <MenuItem>
         <span onClick={onLogout}>退出</span>
+        <br />
+        <span onClick={() => history.push('/usercenter')}>个人中心 </span>
       </MenuItem>
     </Menu>
   );

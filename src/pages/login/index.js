@@ -71,6 +71,8 @@ export default function Login(props) {
             连线超脑
           </h1>
           <Form
+            labelCol={{ span: 4 }}
+            wrapperCol={{ span: 16 }}
             className={styles.form}
             initialValues={{
               remember: true,
@@ -131,6 +133,11 @@ export default function Login(props) {
           </h1>
           {/* Form表单 */}
           <Form
+            labelCol={{ span: 4 }}
+            wrapperCol={{ span: 16 }}
+            /*
+            教程内用法不同
+            */
             className={styles.form}
             initialValues={{
               remember: true,

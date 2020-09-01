@@ -21,13 +21,15 @@
   position: absolute;
   left: 1px;
   top:1px;
+  width:100%;
+  
 }
 
 .right {
   font-size:28px;
   width:36px;
   position: relative;
-  left: 80px;
+  left: 15px;
 }
 
 /* 

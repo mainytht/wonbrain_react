@@ -178,12 +178,12 @@ export default function visjs() {
 
   return (
     <div className="App">
-      <h1>Hello visjs</h1>
-      <button onClick={handleAddNode}>add random node</button>
-      <button onClick={handleGetNodes}>get nodes</button>
-      <button onClick={getDataAndDraw}>getDataAndDraw</button>
+      <button onClick={handleAddNode}>增加随机节点</button>
+      <button onClick={handleGetNodes}>API：getnodes</button>
+      <button onClick={getDataAndDraw}>服务器数据</button>
 
       <VisNetworkReactComponent
+        style={{ width: '100%', height: '300px' }}
         data={data}
         options={{
           // layout: {

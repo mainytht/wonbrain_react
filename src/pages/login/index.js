@@ -11,7 +11,7 @@ export default function Login(props) {
   const [loginmessage, setLoginmessage] = useState('');
   // onFinish 也就是 缺省的submit
 
-  const onLoginFinish = values => {
+  const onLoginFinish = (values) => {
     console.log('Success and form data is:', values);
     request('/api/login', {
       method: 'post',
@@ -20,7 +20,7 @@ export default function Login(props) {
         password: values.password,
       },
     })
-      .then(data => {
+      .then((data) => {
         console.log(data);
         if (data.type === 1) {
           // 状态为1 说明 登录成功
@@ -33,18 +33,18 @@ export default function Login(props) {
           setLoginmessage('用户名或密码错误');
         }
       })
-      .catch(err => {
+      .catch((err) => {
         console.log('err occured');
         console.log(err);
         setLoginmessage('发送请求错误');
       });
   };
 
-  const onLoginFinishFailed = errorInfo => {
+  const onLoginFinishFailed = (errorInfo) => {
     console.log('Failed:', errorInfo);
   };
 
-  const onRegistFinish = values => {
+  const onRegistFinish = (values) => {
     console.log(values);
     request('/api/regist', {
       method: 'post',
@@ -53,12 +53,12 @@ export default function Login(props) {
         password: values.password,
       },
     })
-      .then(data => console.log(data))
+      .then((data) => console.log(data))
 
-      .catch(err => console.log(err));
+      .catch((err) => console.log(err));
   };
 
-  const onRegistFinishFailed = errorInfo => {
+  const onRegistFinishFailed = (errorInfo) => {
     console.log(errorInfo);
   };
 
@@ -73,6 +73,7 @@ export default function Login(props) {
           <Form
             labelCol={{ span: 4 }}
             wrapperCol={{ span: 16 }}
+            //定义标签和输入框的宽度
             className={styles.form}
             initialValues={{
               remember: true,

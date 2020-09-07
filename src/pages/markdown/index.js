@@ -5,6 +5,8 @@ import marked from 'marked';
 import style from './index.css';
 import Visjs from '../visjs';
 import { Tabs } from 'antd';
+import { request } from 'umi';
+
 const { TabPane } = Tabs;
 import { createFromIconfontCN } from '@ant-design/icons';
 // import styles from './index.less';
@@ -23,7 +25,7 @@ import 'codemirror/mode/python/python';
 import 'codemirror/theme/material.css';
 // ambiance ...material
 
-export default params => {
+export default (params) => {
   const [col1, setCol1] = useState(12);
   const [col2, setCol2] = useState(12);
   const [bpreview, setBpreview] = useState('visible');
@@ -49,7 +51,17 @@ export default params => {
     // },
   });
 
-  function uploadtocloud() {}
+  function uploadtocloud() {
+    console.log(mdsrc.current.editor.getValue());
+
+    request('/api/addmarkdown', {
+      method: 'post',
+      data: {
+        userid: 'test', //wait for fulfil
+        content: mdsrc.current.editor.getValue(),
+      },
+    }).then((res) => console.log(res));
+  }
 
   function mdBeforeChange(instance, changeObj) {
     //自定义图片粘贴，这里更新后未能取得更新后的值，所以在update中渲染html
@@ -86,8 +98,8 @@ export default params => {
     );
   }
 
-  function rendertohtml(ins) {
-    mdres.current.innerHTML = marked(ins.doc.getValue());
+  function rendertohtml(instance) {
+    mdres.current.innerHTML = marked(instance.doc.getValue());
   }
   useEffect(() => {
     mdres.current.innerHTML = marked(mdtext);
@@ -197,7 +209,7 @@ export default params => {
             className={style.right}
             type="icon-qiehuan"
             title="切换文档预览/项目管理"
-            onMouseDown={e => {
+            onMouseDown={(e) => {
               setBpreview(bpreview === 'hidden' ? 'visible' : 'hidden');
             }}
           />

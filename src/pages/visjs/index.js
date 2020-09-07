@@ -57,22 +57,22 @@ let defaultdata = {
 };
 
 let events = {
-  click: function(params) {
+  click: function (params) {
     params.event = '[original event]';
     console.log(
       'click event, getNodeAt returns: ' + this.getNodeAt(params.pointer.DOM),
     );
   },
-  doubleClick: function(params) {
+  doubleClick: function (params) {
     console.log('doubleClick Event:', params);
     params.event = '[original event]';
   },
-  oncontext: function(params) {
+  oncontext: function (params) {
     console.log('oncontext Event:', params);
 
     params.event = '[original event]';
   },
-  dragStart: function(params) {
+  dragStart: function (params) {
     // There's no point in displaying this event on screen, it gets immediately overwritten
     params.event = '[original event]';
     console.log('dragStart Event:', params);
@@ -81,53 +81,53 @@ let events = {
         this.getNodeAt(params.pointer.DOM),
     );
   },
-  dragging: function(params) {
+  dragging: function (params) {
     params.event = '[original event]';
   },
-  dragEnd: function(params) {
+  dragEnd: function (params) {
     params.event = '[original event]';
     console.log('dragEnd Event:', params);
     console.log(
       'dragEnd event, getNodeAt returns: ' + this.getNodeAt(params.pointer.DOM),
     );
   },
-  controlNodeDragging: function(params) {
+  controlNodeDragging: function (params) {
     params.event = '[original event]';
   },
-  controlNodeDragEnd: function(params) {
+  controlNodeDragEnd: function (params) {
     params.event = '[original event]';
     console.log('controlNodeDragEnd Event:', params);
   },
-  zoom: function(params) {},
-  showPopup: function(params) {},
-  hidePopup: function() {
+  zoom: function (params) {},
+  showPopup: function (params) {},
+  hidePopup: function () {
     console.log('hidePopup Event');
   },
-  select: function(params) {
+  select: function (params) {
     console.log('select Event:', params);
   },
-  selectNode: function(params) {
+  selectNode: function (params) {
     console.log('selectNode Event:', params);
   },
-  selectEdge: function(params) {
+  selectEdge: function (params) {
     console.log('selectEdge Event:', params);
   },
-  deselectNode: function(params) {
+  deselectNode: function (params) {
     console.log('deselectNode Event:', params);
   },
-  deselectEdge: function(params) {
+  deselectEdge: function (params) {
     console.log('deselectEdge Event:', params);
   },
-  hoverNode: function(params) {
+  hoverNode: function (params) {
     console.log('hoverNode Event:', params);
   },
-  hoverEdge: function(params) {
+  hoverEdge: function (params) {
     console.log('hoverEdge Event:', params);
   },
-  blurNode: function(params) {
+  blurNode: function (params) {
     console.log('blurNode Event:', params);
   },
-  blurEdge: function(params) {
+  blurEdge: function (params) {
     console.log('blurEdge Event:', params);
   },
 };
@@ -140,11 +140,20 @@ export default function visjs() {
     const id = data.nodes.length + 1;
     setData({
       ...data,
-      nodes: [...data.nodes, { id, label: `Node ${id}` }],
+      nodes: [
+        ...data.nodes,
+        {
+          id,
+          label: `Node ${id}`,
+          //id= id:id;
+          color: 'rgba(200,100,100,1)',
+          borderWidth: '2',
+        },
+      ],
     });
   }, [setData, data]);
 
-  const getNodes = useCallback(a => {
+  const getNodes = useCallback((a) => {
     setNetworkNodes(a);
   }, []);
 
@@ -156,21 +165,21 @@ export default function visjs() {
     var res = 0;
     var err = 0;
     [err, res] = await request('/api/getcyto?collectionname=nodes')
-      .then(data => [null, data])
-      .catch(err => [err, null]);
+      .then((data) => [null, data])
+      .catch((err) => [err, null]);
     console.log(res);
-    let tmpnodes = res.map(item => {
+    let tmpnodes = res.map((item) => {
       return { id: item.id, label: item.name };
     });
     // console.log(res.map(item => { return { id:item.id,label:item.name } }))
     res = 0;
     err = 0;
     [err, res] = await request('/api/getcyto?collectionname=edges')
-      .then(data => [null, data])
-      .catch(err => [err, null]);
+      .then((data) => [null, data])
+      .catch((err) => [err, null]);
     console.log(res);
     // console.log(res.map(item => { return { id:item.id,from:item.source,to:item.target } }))
-    let tmpedges = res.map(item => {
+    let tmpedges = res.map((item) => {
       return { id: item.id, from: item.source, to: item.target };
     });
     setData({ nodes: tmpnodes, edges: tmpedges });
@@ -183,7 +192,7 @@ export default function visjs() {
       <button onClick={getDataAndDraw}>服务器数据</button>
 
       <VisNetworkReactComponent
-        style={{ width: '100%', height: '300px' }}
+        style={{ width: '100%', height: '500px' }}
         data={data}
         options={{
           // layout: {
@@ -211,7 +220,7 @@ export default function visjs() {
           nodes: {
             shape: 'box',
             scaling: {
-              customScalingFunction: function(min, max, total, value) {
+              customScalingFunction: function (min, max, total, value) {
                 return value / total;
               },
               min: 5,

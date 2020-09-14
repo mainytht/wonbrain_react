@@ -23,6 +23,7 @@ const obj = {
 function reducer(state, action) {
   // fn是action对应的return语句（也是对象，也是函数）如果存在，那么就返回函数（参数是action和state)。
   const fn = obj[action.type];
+  //上一行的意思是：根据actiontype， 返回action.type对应的函数/对象
   if (fn) {
     return fn(state, action);
     // 此函数没有名字，此处也只是用fn指向。

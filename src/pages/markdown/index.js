@@ -3,7 +3,6 @@ import { Row, Col } from 'antd';
 import { UnControlled as CodeMirror } from 'react-codemirror2';
 import marked from 'marked';
 import style from './index.css';
-import Visjs from '../visjs';
 import { Tabs } from 'antd';
 import { request } from 'umi';
 
@@ -26,17 +25,11 @@ import 'codemirror/theme/material.css';
 // ambiance ...material
 
 export default (params) => {
-  const [col1, setCol1] = useState(12);
-  const [col2, setCol2] = useState(12);
-  const [bpreview, setBpreview] = useState('visible');
   let mdtext = '# test  only ';
   const IconFont = createFromIconfontCN({
     scriptUrl: '//at.alicdn.com/t/font_2016956_nwzo0eu00d.js',
   });
-
   const mdsrc = useRef();
-  const mdres = useRef();
-  const vismap = useRef();
   marked.setOptions({
     // renderer: new marked.Renderer(),
     gfm: true,
@@ -99,168 +92,140 @@ export default (params) => {
   }
 
   function rendertohtml(instance) {
-    mdres.current.innerHTML = marked(instance.doc.getValue());
+    // mdres.current.innerHTML = marked(instance.doc.getValue());
+    // 需要改写成context use reducer形式
   }
   useEffect(() => {
-    mdres.current.innerHTML = marked(mdtext);
+    // mdres.current.innerHTML = marked(mdtext);
   }, []);
 
   return (
-    <Row>
-      <Col span={col1}>
-        <div className={style.mdtoolbar}>
-          <IconFont
-            className={style.iconfont}
-            type="icon-shangchuanyunduan1"
-            title="上传到云"
-            onMouseDown={uploadtocloud}
-          />
-          <IconFont
-            className={style.iconfont}
-            type="icon-heading"
-            title="改变标题"
-            onMouseDown={() => addHead('# ')}
-          />
-          <IconFont
-            className={style.iconfont}
-            type="icon-cuti"
-            title="粗体文字"
-            onMouseDown={() => mdreplace('**', '**')}
-          />
-
-          <IconFont
-            className={style.iconfont}
-            type="icon-xieti1"
-            title="斜体文字"
-            onMouseDown={() => mdreplace('*', '*')}
-          />
-
-          <IconFont
-            className={style.iconfont}
-            type="icon-underline"
-            title="下划线"
-            onMouseDown={() => mdreplace('<u>', '</u>')}
-          />
-          <IconFont
-            className={style.iconfont}
-            type="icon-iconzhonghuaxian"
-            title="中划线"
-            onMouseDown={() => mdreplace('~~', '~~')}
-          />
-
-          <IconFont
-            className={style.iconfont}
-            type="icon-code"
-            title="标记代码段"
-            onMouseDown={() => mdreplace('`', '`')}
-          />
-
-          <IconFont
-            className={style.iconfont}
-            type="icon-undo"
-            title="取消"
-            onMouseDown={() => mdsrc.current.editor.undo()}
-          />
-          <IconFont
-            className={style.iconfont}
-            type="icon-redo"
-            title="重做"
-            onMouseDown={() => mdsrc.current.editor.redo()}
-          />
-
-          <IconFont
-            className={style.iconfont}
-            type="icon-liebiao-copy-copy-copy"
-            title="列表"
-            onMouseDown={() => addHead('- ')}
-          />
-          <IconFont
-            className={style.iconfont}
-            type="icon-liebiaoshuzi"
-            title="数字列表"
-            onMouseDown={() => addHead('1. ')}
-          />
-          <IconFont
-            className={style.iconfont}
-            type="icon-check-list"
-            title="选择框"
-            onMouseDown={() => addHead('- []输入 ')}
-          />
-          <IconFont
-            className={style.iconfont}
-            type="icon-table"
-            title="表格"
-            onMouseDown={() => addHead('|   |   |\n|   |   |\n|   |   |\n')}
-          />
-          <IconFont
-            className={style.iconfont}
-            type="icon-lianjie"
-            title="链接"
-            onMouseDown={() => mdreplace('[', '](http://)')}
-          />
-          <IconFont
-            className={style.iconfont}
-            type="icon-tupian"
-            title="图片"
-            onMouseDown={() => mdreplace('![](', ')')}
-          />
-
-          <IconFont
-            className={style.right}
-            type="icon-qiehuan"
-            title="切换文档预览/项目管理"
-            onMouseDown={(e) => {
-              setBpreview(bpreview === 'hidden' ? 'visible' : 'hidden');
-            }}
-          />
-        </div>
-
-        <CodeMirror
-          onBeforeChange={mdBeforeChange}
-          ref={mdsrc}
-          value={mdtext}
-          // cursor不设的话有时候看不见
-          options={{
-            cursor: {
-              line: 5,
-              ch: 10,
-            },
-            lineNumbers: true, // 显示行号
-            // columnNumbers:true, //没起作用
-            theme: 'material', // 设置主题
-            // readOnly: true, // 只读
-            mode: 'markdown', // 实现代码高亮
-            lineWrapping: true,
-          }}
-          onUpdate={rendertohtml}
+    <>
+      <div className={style.mdtoolbar}>
+        <IconFont
+          className={style.iconfont}
+          type="icon-shangchuanyunduan1"
+          title="上传到云"
+          onMouseDown={uploadtocloud}
         />
-      </Col>
-      <Col span={col2}>
-        <div
-          ref={mdres}
-          style={{ visibility: bpreview }}
-          className={style.mdres}
-        ></div>
-        <div
-          style={{ visibility: bpreview === 'hidden' ? 'visible' : 'hidden' }}
-          className={style.visjs}
-        >
-          <Visjs />
-        </div>
-        {/* <Visjs style={{ visibility:(bpreview === 'hidden')? 'visible' : 'hidden'}} /> */}
-        {/* 不能用setCol(0),因为这样就会消失,所以这里是折衷方法.. 
-        e.target.style.visibility='hidden';vismap.current.style.visibility='visible';
-        e.target.style.visibility='hidden';mdres.current.style.visibility='visible' 
-           //这段代码不能用，visjs消失后不能重新渲染，
-          <Tabs defaultActiveKey="1" size="small">
-            <TabPane tab="文档预览" key="1">
-              <div ref={mdres}>preview</div>
-            </TabPane>
-            <TabPane tab="思维导图" key="2">
-              <Visjs />
-            </TabPane>
-          </Tabs> */}
-      </Col>
-    </Row>
+        <IconFont
+          className={style.iconfont}
+          type="icon-heading"
+          title="改变标题"
+          onMouseDown={() => addHead('# ')}
+        />
+        <IconFont
+          className={style.iconfont}
+          type="icon-cuti"
+          title="粗体文字"
+          onMouseDown={() => mdreplace('**', '**')}
+        />
+
+        <IconFont
+          className={style.iconfont}
+          type="icon-xieti1"
+          title="斜体文字"
+          onMouseDown={() => mdreplace('*', '*')}
+        />
+
+        <IconFont
+          className={style.iconfont}
+          type="icon-underline"
+          title="下划线"
+          onMouseDown={() => mdreplace('<u>', '</u>')}
+        />
+        <IconFont
+          className={style.iconfont}
+          type="icon-iconzhonghuaxian"
+          title="中划线"
+          onMouseDown={() => mdreplace('~~', '~~')}
+        />
+
+        <IconFont
+          className={style.iconfont}
+          type="icon-code"
+          title="标记代码段"
+          onMouseDown={() => mdreplace('`', '`')}
+        />
+
+        <IconFont
+          className={style.iconfont}
+          type="icon-undo"
+          title="取消"
+          onMouseDown={() => mdsrc.current.editor.undo()}
+        />
+        <IconFont
+          className={style.iconfont}
+          type="icon-redo"
+          title="重做"
+          onMouseDown={() => mdsrc.current.editor.redo()}
+        />
+
+        <IconFont
+          className={style.iconfont}
+          type="icon-liebiao-copy-copy-copy"
+          title="列表"
+          onMouseDown={() => addHead('- ')}
+        />
+        <IconFont
+          className={style.iconfont}
+          type="icon-liebiaoshuzi"
+          title="数字列表"
+          onMouseDown={() => addHead('1. ')}
+        />
+        <IconFont
+          className={style.iconfont}
+          type="icon-check-list"
+          title="选择框"
+          onMouseDown={() => addHead('- []输入 ')}
+        />
+        <IconFont
+          className={style.iconfont}
+          type="icon-table"
+          title="表格"
+          onMouseDown={() => addHead('|   |   |\n|   |   |\n|   |   |\n')}
+        />
+        <IconFont
+          className={style.iconfont}
+          type="icon-lianjie"
+          title="链接"
+          onMouseDown={() => mdreplace('[', '](http://)')}
+        />
+        <IconFont
+          className={style.iconfont}
+          type="icon-tupian"
+          title="图片"
+          onMouseDown={() => mdreplace('![](', ')')}
+        />
+
+        <IconFont
+          className={style.right}
+          type="icon-qiehuan"
+          title="切换文档预览/项目管理"
+          onMouseDown={(e) => {
+            // setBpreview(bpreview === 'hidden' ? 'visible' : 'hidden');
+          }}
+        />
+      </div>
+      <CodeMirror
+        onBeforeChange={mdBeforeChange}
+        ref={mdsrc}
+        value={mdtext}
+        // cursor不设的话有时候看不见
+        options={{
+          cursor: {
+            line: 5,
+            ch: 10,
+          },
+          lineNumbers: true, // 显示行号
+          // columnNumbers:true, //没起作用
+          theme: 'material', // 设置主题
+          // readOnly: true, // 只读
+          mode: 'markdown', // 实现代码高亮
+          lineWrapping: true,
+        }}
+        onUpdate={rendertohtml}
+      />
+    </>
   );
 };

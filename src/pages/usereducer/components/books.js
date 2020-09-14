@@ -5,7 +5,7 @@ import { request } from 'umi';
 function Books() {
   const { state, dispatch } = useContext(Context);
   useEffect(() => {
-    request('/books').then(res => {
+    request('/books').then((res) => {
       dispatch({ type: 'setBooks', books: res });
     });
   }, []);
@@ -14,7 +14,7 @@ function Books() {
       <h1>我的书籍</h1>
       <ol>
         {state.books
-          ? state.books.map(book => <li key={book.id}>{book.name}</li>)
+          ? state.books.map((book) => <li key={book.id}>{book.name}</li>)
           : '加载中'}
       </ol>
     </div>

@@ -42,8 +42,8 @@ const index = ({ history, location }) => {
           <MenuItem key="/admin">
             <Link to="/admin">管理</Link>
           </MenuItem>
-          <MenuItem key="/list">
-            <Link to="/list">useReduce</Link>
+          <MenuItem key="/usereducer">
+            <Link to="/usereducer">useReducer</Link>
           </MenuItem>
           <MenuItem key="/visjs">
             <Link to="/visjs">vjsjs</Link>

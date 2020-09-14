@@ -5,7 +5,7 @@ import { request } from 'umi';
 function User() {
   const { state, dispatch } = useContext(Context);
   useEffect(() => {
-    request('/user').then(res => {
+    request('/user').then((res) => {
       dispatch({ type: 'setUser', user: res });
     });
   }, []);

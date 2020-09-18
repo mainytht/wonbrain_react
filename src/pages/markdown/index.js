@@ -30,10 +30,31 @@ function App() {
 
   const api = { mdstore, dispatch };
 
+  function handleClick() {
+    var db;
+    var request = indexedDB.open('library3');
+
+    request.onupgradeneeded = function () {
+      // 此数据库此前不存在，进行初始化
+      var db = request.result;
+      var store = db.createObjectStore('books3', { keyPath: 'isbn' });
+      var titleIndex = store.createIndex('by_title', 'title', { unique: true });
+      var authorIndex = store.createIndex('by_author', 'author');
+
+      // 填入初始值
+      store.put({ title: 'Quarry Memories', author: 'Fred', isbn: 123456 });
+      store.put({ title: 'Water Buffaloes', author: 'Fred', isbn: 234567 });
+      store.put({ title: 'Bedrock Nights', author: 'Barney', isbn: 345678 });
+    };
+
+    request.onsuccess = function () {
+      db = request.result;
+    };
+  }
   return (
     <Context.Provider value={api}>
       <Markdown />
-      <h1>{mdstore.mdtext}</h1>
+      <h1 onClick={handleClick}>{mdstore.mdtext}</h1>
     </Context.Provider>
   );
 }

@@ -39,7 +39,10 @@ function Markdown() {
         userid: 'test', //wait for fulfil
         content: mdsrc.current.editor.getValue(),
       },
-    }).then((res) => console.log(res));
+    }).then((res) => {
+      // console.log(res.data.data._id)
+      if (!mdstore.mdid) dispatch({ type: 'setMdid', mdid: res.data._id });
+    });
   }
 
   function handleBeforeChange(instance, changeObj) {

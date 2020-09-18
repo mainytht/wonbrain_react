@@ -1,16 +1,23 @@
 import React, { useReducer } from 'react';
-import Context from '@/store/context/mdcontext.js';
-
+import User from './components/user';
+import Context from './Context';
+import Books from './components/books';
+import Movies from './components/movies';
+import userReducer from './reducers/user_reducer';
+import booksReducer from './reducers/books_reducer';
+import moviesReducer from './reducers/movies_reducer';
 import style from './index.css';
-import Markdown from '@/components/markdown';
-import mdReducer from '@/components/markdown/reducer.js';
 
-const mdinit = {
-  mdtext: '# 标题',
+const store = {
+  user: null,
+  books: null,
+  movies: null,
 };
 
 const obj = {
-  ...mdReducer,
+  ...userReducer,
+  ...booksReducer,
+  ...moviesReducer,
 };
 
 function reducer(state, action) {
@@ -26,14 +33,20 @@ function reducer(state, action) {
 }
 
 function App() {
-  const [mdstore, dispatch] = useReducer(reducer, mdinit);
+  const [state, dispatch] = useReducer(reducer, store);
 
-  const api = { mdstore, dispatch };
-
+  const api = { state, dispatch };
+  console.log('reducer combined to:');
+  console.log(obj);
   return (
     <Context.Provider value={api}>
-      <Markdown />
-      <h1>{mdstore.mdtext}</h1>
+      <h1 className={style.title}>
+        利用 useRecuce useContext 模拟 redux ，利用 自带mock
+      </h1>
+      <User />
+      <hr />
+      <Books />
+      <Movies />
     </Context.Provider>
   );
 }

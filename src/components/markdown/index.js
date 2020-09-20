@@ -40,8 +40,8 @@ function Markdown() {
         content: mdsrc.current.editor.getValue(),
       },
     }).then((res) => {
-      // console.log(res.data.data._id)
-      if (!mdstore.mdid) dispatch({ type: 'setMdid', mdid: res.data._id });
+      console.log(res.data);
+      if (!mdstore.mdid) dispatch({ type: 'setMd', action: res.data });
     });
   }
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import styles from './index.css';
 
 const Temp = (props) => {
@@ -11,9 +11,15 @@ const Temp = (props) => {
 };
 
 export default () => {
+  const pdfref = useRef();
+  function handleclick() {
+    pdfref.current.innerHTML = 'asdfds';
+  }
   return (
     <div>
+      <button onClick={handleclick}></button>
       <h1 className={styles.title}>Page mockdemo</h1>
+      <div ref={pdfref}></div>
       <Temp />
     </div>
   );

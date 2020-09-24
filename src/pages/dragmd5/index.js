@@ -2,14 +2,14 @@ import React, { useRef, useEffect, useState } from 'react';
 import { Form, Input, Button, Checkbox } from 'antd';
 import SparkMD5 from 'spark-md5';
 import './index.less';
-import { Document, Page } from 'react-pdf';
+import PDFViewer from './PDFViewer';
 
 export default function index() {
   const [md5code, setMd5code] = useState('000000000000');
-  const [pdffile, setPdffile] = useState('test.pdf');
+  const [pdffile, setPdffile] = useState();
   const upload = useRef();
   const imgref = useRef();
-  const pdfref = useRef();
+
   function onDrag(e) {
     console.log('ondrag');
     e.stopPropagation();
@@ -20,7 +20,7 @@ export default function index() {
     e.stopPropagation();
     e.preventDefault();
     imgPreview(e.dataTransfer.files);
-    codeFile(e.dataTransfer.files);
+    codeFile(e.dataTransfer.files[0]);
   }
   function imgPreview(files) {
     let read = new FileReader();
@@ -29,7 +29,7 @@ export default function index() {
     read.onload = function () {
       let url = read.result;
       console.log(url);
-      //   setPdffile(url)
+      setPdffile(url);
       let img = new Image();
       console.log(url);
       img.src = url;
@@ -37,15 +37,9 @@ export default function index() {
     };
   }
   function handlefileinput(e) {
-    codeFile(e.target.files);
-
-    // modify for read pdf
-
-    // setPdffile(e.target.files[0])
-    // console.log(e.target.files[0])
+    codeFile(e.target.files[0]);
   }
-  function codeFile(files) {
-    let file = files[0];
+  function codeFile(file) {
     // let params = new FormData();
 
     //   params.append("file", files[0]);
@@ -81,7 +75,7 @@ export default function index() {
       fileReader.readAsArrayBuffer(blobSlice.call(file, start, end));
     }
 
-    console.log('file name: ' + file.name);
+    console.log(file);
     chunks = Math.ceil(file.size / chunkSize);
     loadNext();
   }
@@ -125,17 +119,7 @@ export default function index() {
         />
       </form>
       <div ref={imgref} height="400px"></div>
-      <div ref={pdfref} height="400px">
-        <Document
-          file="fulltext1632013.pdf"
-          onLoadSuccess={onDocumentLoadSuccess}
-        >
-          <Page pageNumber={pageNumber} />
-        </Document>
-        <p>
-          Page {pageNumber} of {numPages}
-        </p>
-      </div>
+      <PDFViewer alreadySrc={pdffile} />
     </div>
   );
 }

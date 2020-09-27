@@ -19,13 +19,13 @@ export default function index() {
     console.log('ondrop');
     e.stopPropagation();
     e.preventDefault();
-    imgPreview(e.dataTransfer.files);
+    imgPreview(e.dataTransfer.files[0]);
     codeFile(e.dataTransfer.files[0]);
   }
-  function imgPreview(files) {
+  function imgPreview(file) {
     let read = new FileReader();
     let imgUrl = imgref.current;
-    read.readAsDataURL(files[0]);
+    read.readAsDataURL(file);
     read.onload = function () {
       let url = read.result;
       console.log(url);
@@ -37,6 +37,8 @@ export default function index() {
     };
   }
   function handlefileinput(e) {
+    console.log('fileinput');
+    imgPreview(e.target.files[0]);
     codeFile(e.target.files[0]);
   }
   function codeFile(file) {
@@ -80,13 +82,6 @@ export default function index() {
     loadNext();
   }
 
-  const [numPages, setNumPages] = useState(null);
-  const [pageNumber, setPageNumber] = useState(1);
-
-  function onDocumentLoadSuccess({ numPages }) {
-    setNumPages(numPages);
-  }
-
   useEffect(() => {
     upload.current.addEventListener('dragenter', onDrag, false);
     upload.current.addEventListener('dragover', onDrag, false);
@@ -104,21 +99,23 @@ export default function index() {
         <p>拖拽上传</p>
         <p>{md5code}</p>
       </div>
-      <form
+      {/* <form
         method="POST"
         encType="multipart/form-data"
         onSubmit={() => {
           return false;
         }}
       >
-        <input
-          id="file"
-          onChange={handlefileinput}
-          type="file"
-          placeholder="select a file"
-        />
-      </form>
-      <div ref={imgref} height="400px"></div>
+      </form> */}
+      {/* 源码把input包裹在form中，似乎不需要也可以 */}
+      <input
+        id="file"
+        onChange={handlefileinput}
+        type="file"
+        placeholder="select a file"
+      />
+
+      <div ref={imgref} height="400px" />
       <PDFViewer alreadySrc={pdffile} />
     </div>
   );

@@ -34,8 +34,10 @@ const PDFViewer = (props) => {
         renderMode="canvas" //定义文档呈现的形式
         loading="正在努力加载中" //加载时提示语句
         externalLinkTarget="_blank"
+        noData="Please select a file.\n 可以拖拉或者打开"
       >
-        <Page pageNumber={page} scale={2} /> {/* scale 呈现的比例 */}
+        <Page pageNumber={page} scale={2} renderTextLayer={true} />{' '}
+        {/* scale 呈现的比例 */}
       </Document>
       <Pagination
         onChange={handelOnChange}

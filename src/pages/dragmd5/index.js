@@ -6,7 +6,8 @@ import PDFViewer from './PDFViewer';
 
 export default function index() {
   const [md5code, setMd5code] = useState('000000000000');
-  const [pdffile, setPdffile] = useState();
+  const [pdffile, setPdffile] = useState('/智能简史.pdf');
+  //this 3.pdf file is in /public folder
   const upload = useRef();
   const imgref = useRef();
 

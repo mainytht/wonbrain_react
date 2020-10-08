@@ -18,8 +18,8 @@ export default () => {
       ],
     };
     let test = await window.showOpenFilePicker(opts);
+    console.log(test[0]);
     setFile(test);
-    console.log(file[0]);
   }
   async function saveFile(file) {
     setFile(await window.showDirectoryPicker());
@@ -44,12 +44,11 @@ export default () => {
 
       <div>
         <br />
-        {/* <ul> 
-         { {file.map((item) => (
+        <ul>
+          {file.map((item) => (
             <li key={item.name}>{item.name}</li>
           ))}
-        </ul>  */}
-        {file[0]}
+        </ul>
         <br />
         {require('@/assets/logo2.png')}
       </div>

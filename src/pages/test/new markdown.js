@@ -39,7 +39,7 @@ export default () => {
 
   function handleeditortest() {
     editorref.current.getInstance().exec('Bold');
-    console.log(editorref.current.getInstance().getCodeMirror())
+    console.log(editorref.current.getInstance().setMarkdown('# 111'))
   }
   useEffect(() => {
     editorref.current.getInstance().setMarkdown('# 222')

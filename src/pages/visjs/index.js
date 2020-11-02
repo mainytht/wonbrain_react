@@ -1,4 +1,6 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState,useRef } from 'react';
+import { Row, Col } from 'antd';
+
 import { request } from 'umi';
 import './index.css';
 
@@ -135,9 +137,28 @@ let events = {
 export default function visjs() {
   const [data, setData] = useState(defaultdata);
   const [networkNodes, setNetworkNodes] = useState([]);
+  const visref=useRef();
 
-  const handleAddNode = useCallback(() => {
+  // const handleAddNode = useCallback(() => {
+  //   const id = data.nodes.length + 1;
+  //   setData({
+  //     ...data,
+  //     nodes: [
+  //       ...data.nodes,
+  //       {
+  //         id,
+  //         label: `Node ${id}`,
+  //         //id= id:id;
+  //         color: 'rgba(200,100,100,1)',
+  //         borderWidth: '2',
+  //       },
+  //     ],
+  //   });
+  // }, [setData, data]);
+
+  const handleAddNode = () => {
     const id = data.nodes.length + 1;
+    console.log(visref.current);
     setData({
       ...data,
       nodes: [
@@ -146,12 +167,12 @@ export default function visjs() {
           id,
           label: `Node ${id}`,
           //id= id:id;
-          color: 'rgba(200,100,100,1)',
+          // color: 'rgba(200,100,100,1)',
           borderWidth: '2',
         },
       ],
     });
-  }, [setData, data]);
+  };
 
   const getNodes = useCallback((a) => {
     setNetworkNodes(a);
@@ -187,50 +208,133 @@ export default function visjs() {
 
   return (
     <div className="App">
-      <button onClick={handleAddNode}>增加随机节点</button>
-      <button onClick={handleGetNodes}>API：getnodes</button>
-      <button onClick={getDataAndDraw}>服务器数据</button>
+      <Row>
+        <Col span="12">
+          <button onClick={handleAddNode}>增加随机节点</button>
+          <button onClick={handleGetNodes}>API：getnodes</button>
+          <button onClick={getDataAndDraw}>服务器数据</button>
 
-      <VisNetworkReactComponent
-        style={{ width: '100%', height: '500px' }}
-        data={data}
-        options={{
-          // layout: {
-          //   hierarchical: {
-          //     direction: "LR",
-          //   },
-          // },
-          layout: {
-            randomSeed: undefined,
-            improvedLayout: true,
-            clusterThreshold: 150,
-            hierarchical: {
-              enabled: false,
-              levelSeparation: 150,
-              nodeSpacing: 100,
-              treeSpacing: 200,
-              blockShifting: true,
-              edgeMinimization: true,
-              parentCentralization: true,
-              direction: 'UD', // UD, DU, LR, RL
-              sortMethod: 'hubsize', // hubsize, directed
-              shakeTowards: 'roots', // roots, leaves
-            },
-          },
-          nodes: {
-            shape: 'box',
-            scaling: {
-              customScalingFunction: function (min, max, total, value) {
-                return value / total;
+          <VisNetworkReactComponent
+            ref={visref}
+            style={{ width: '100%', height: '500px' }}
+            data={data}
+            options={{
+              // layout: {
+              //   hierarchical: {
+              //     direction: "LR",
+              //   },
+              // },
+              manipulation: {
+                enabled: true,
+                initiallyActive: true,
+                addNode: (nodeData, callback)=>{
+                  nodeData.label = 'hello world';
+                  callback(nodeData);
+                },
+                addEdge: true,
+                editNode: ()=>{},
+                editEdge: true,
+                deleteNode: true,
+                deleteEdge: true,
+                controlNodeStyle: {
+                  // all node options are valid.
+                },
               },
-              min: 5,
-              max: 150,
-            },
-          },
-        }}
-        events={events}
-        getNodes={getNodes}
-      />
+              layout: {
+                randomSeed: undefined,
+                improvedLayout: true,
+                clusterThreshold: 150,
+                hierarchical: {
+                  enabled: false,
+                  levelSeparation: 150,
+                  nodeSpacing: 100,
+                  treeSpacing: 200,
+                  blockShifting: true,
+                  edgeMinimization: true,
+                  parentCentralization: true,
+                  direction: 'UD', // UD, DU, LR, RL
+                  sortMethod: 'hubsize', // hubsize, directed
+                  shakeTowards: 'roots', // roots, leaves
+                },
+              },
+              nodes: {
+                shape: 'box',
+                scaling: {
+                  customScalingFunction: function (min, max, total, value) {
+                    return value / total;
+                  },
+                  min: 5,
+                  max: 150,
+                },
+              },
+            }}
+            events={events}
+            getNodes={getNodes}
+          />
+        </Col>
+        <Col span="12">
+          <VisNetworkReactComponent
+            style={{ width: '100%', height: '500px' }}
+            data={data}
+            options={{
+              // layout: {
+              //   hierarchical: {
+              //     direction: "LR",
+              //   },
+              // },
+              manipulation: {
+                enabled: true,
+                initiallyActive: true,
+                addNode: true,
+                addEdge: true,
+                editNode:  ()=>{},
+                editEdge: true,
+                deleteNode: true,
+                deleteEdge: true,
+                controlNodeStyle: {
+                  // all node options are valid.
+                },
+              },
+              layout: {
+                randomSeed: undefined,
+                improvedLayout: true,
+                clusterThreshold: 150,
+                hierarchical: {
+                  enabled: false,
+                  levelSeparation: 150,
+                  nodeSpacing: 100,
+                  treeSpacing: 200,
+                  blockShifting: true,
+                  edgeMinimization: true,
+                  parentCentralization: true,
+                  direction: 'UD', // UD, DU, LR, RL
+                  sortMethod: 'hubsize', // hubsize, directed
+                  shakeTowards: 'roots', // roots, leaves
+                },
+              },
+              nodes: {
+                shape: 'box',
+                scaling: {
+                  customScalingFunction: function (min, max, total, value) {
+                    return value / total;
+                  },
+                  min: 5,
+                  max: 150,
+                },
+              },
+            }}
+            events={events}
+            getNodes={getNodes}
+          />
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <p draggable="true">
+            这是一段可移动的段落。请把该段落拖入上面的矩形。
+          </p>
+        </Col>
+      </Row>
     </div>
   );
 }

@@ -20,8 +20,9 @@ export default function index() {
     console.log('ondrop');
     e.stopPropagation();
     e.preventDefault();
-    imgPreview(e.dataTransfer.files[0]);
-    codeFile(e.dataTransfer.files[0]);
+    // imgPreview(e.dataTransfer.files[0]);
+    console.log(e)
+    // codeFile(e.dataTransfer.files[0]);
   }
   function imgPreview(file) {
     let read = new FileReader();
